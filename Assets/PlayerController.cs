@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!Input.GetMouseButton(0)) return;
         float xInput = Input.GetAxis("Mouse X");
-        transform.Rotate(xInput * rotateSpeed * Time.deltaTime * Vector3.up);
+        transform.Rotate(-xInput * rotateSpeed * Time.deltaTime * Vector3.up);
         Vector3 newEuler = transform.eulerAngles;
         float yEuler = newEuler.y;
         if (yEuler > 180) yEuler -= 360;
