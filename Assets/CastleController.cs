@@ -50,7 +50,6 @@ public class CastleController : MonoBehaviour
         float z = spawnPoint.position.z;
         enemy.GetComponent<Transform>().position = new Vector3(x, 0, z);
         enemy.GetComponent<Transform>().rotation = Quaternion.Euler(0, -180, 0);
-        enemy.Running();
     }
 
     public void Hit()

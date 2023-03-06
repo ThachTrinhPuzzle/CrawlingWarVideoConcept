@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        onFire.onFired = Spawn;
+        onFire.onFired = SpawnTroop;
     }
 
     void Update()
@@ -61,24 +61,18 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void Spawn()
+    void SpawnTroop()
     {
         Vector3 mockPos = spawnPoint.forward - spawnPoint.position;
         float totalAngle = 90;
         float angle = totalAngle / numPerShoot;
         float globalAngle = spawnPoint.eulerAngles.y;
-        
         for (int i = 0; i < numPerShoot; i++)
         {
-
             float sign = Mathf.Sign(180 - globalAngle);
             float rAngle = Mathf.Deg2Rad * (globalAngle - sign * (angle * i) + sign * totalAngle / 2);
-
-            var dir = new Vector3(Mathf.Sin(rAngle), 0, Mathf.Cos(rAngle));
-            var ob = Instantiate(creepPrefab);
-            ob.transform.position = spawnPoint.position;
+            Instantiate(creepPrefab, spawnPoint.position, spawnPoint.rotation * Quaternion.Euler(-90, 0, 0));
             Instantiate(fxGun, spawnPoint.position, Quaternion.identity);
-            ob.Force(spawnPoint.position + dir * 2);
         }
         
     }

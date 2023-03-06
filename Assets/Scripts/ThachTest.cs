@@ -7,18 +7,32 @@ public class ThachTest : MonoBehaviour
     public Rigidbody rigid;
     public float speed;
     public float force;
-    private void Start()
-    {
-        
-    }
+    public float angle;
+    public bool useVelocity;
 
     private void Update()
     {
+        Vector3 newVelocity = rigid.velocity;
+        newVelocity.z = speed;
+        rigid.velocity = newVelocity;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rigid.AddForce(force * Vector3.forward);
+            TestPhysic();
         }
-        //rigid.velocity = Vector3.forward * speed;
+
     }
+
+    private void Rotate()
+    {
+        Debug.Log(transform.rotation);
+        transform.rotation = transform.rotation * Quaternion.Euler(angle, 0, 0);
+    }
+
+    private void TestPhysic()
+    {
+        if (useVelocity) rigid.velocity = Vector3.forward * speed;
+        else rigid.AddForce(force * Vector3.forward);
+    }
+
 
 }

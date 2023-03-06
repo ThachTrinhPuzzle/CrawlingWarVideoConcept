@@ -10,8 +10,6 @@ public class WhyAreYouRunning : MonoBehaviour
     [SerializeField] private float runSpeed = 5;
     [SerializeField] private Animator anim;
     [SerializeField] private Rigidbody rigid;
-    
-    private bool _isRunning;
     [SerializeField] private Team team;
     public Team Team => team;
 
@@ -19,13 +17,9 @@ public class WhyAreYouRunning : MonoBehaviour
 
     private void Awake()
     {
-        if (team == Team.A)
+        if (team == Team.B)
         {
-            rigid.isKinematic = true;
-        }
-        else
-        {
-            var phaos = GameObject.FindObjectsOfType<PhaoController>().ToList();
+            var phaos = FindObjectsOfType<PhaoController>().ToList();
             foreach (var phao in phaos)
             {
                 phao.Enemies.Add(transform);
@@ -35,31 +29,18 @@ public class WhyAreYouRunning : MonoBehaviour
 
     void Update()
     {
-        if (_isRunning)
-        {
-            Vector3 dir = team == Team.A ? Vector3.forward : -Vector3.forward;
-            rigid.velocity = runSpeed * Time.deltaTime * dir;
-            anim.SetBool("running", true);
-        }
+        RunForward();
     }
 
-    public void Running()
+    private void RunForward()
     {
-        if (team == Team.B)
-        {
-            runSpeed *= -1;
-        }
-        else
-        {
-            rigid.isKinematic = false;
-        }
-        _isRunning = true;
+        Vector3 newVelocity = rigid.velocity;
+        Vector3 direction = runSpeed * transform.forward;
+        newVelocity.x = direction.x;
+        newVelocity.z = direction.z;
+        rigid.velocity = newVelocity;
     }
 
-    public void Force(Vector3 dir)
-    {
-        transform.DOMove(dir, 0.3f).OnComplete(() => { Running(); });
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -77,6 +58,8 @@ public class WhyAreYouRunning : MonoBehaviour
             Dead();
         }
     }
+
+
 
     void Dead()
     {
