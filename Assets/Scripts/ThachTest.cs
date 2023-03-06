@@ -19,7 +19,6 @@ public class ThachTest : MonoBehaviour
         {
             TestPhysic();
         }
-
     }
 
     private void Rotate()
