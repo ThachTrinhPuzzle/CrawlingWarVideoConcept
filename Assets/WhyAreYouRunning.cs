@@ -17,7 +17,7 @@ public class WhyAreYouRunning : MonoBehaviour
 
     private bool _isDead;
 
-    private void OnEnable()
+    private void Awake()
     {
         if (team == Team.A)
         {
@@ -26,7 +26,6 @@ public class WhyAreYouRunning : MonoBehaviour
         else
         {
             var phaos = GameObject.FindObjectsOfType<PhaoController>().ToList();
-
             foreach (var phao in phaos)
             {
                 phao.Enemies.Add(transform);
@@ -39,7 +38,6 @@ public class WhyAreYouRunning : MonoBehaviour
         if (_isRunning)
         {
             Vector3 dir = team == Team.A ? Vector3.forward : -Vector3.forward;
-            //transform.Translate(runSpeed * Time.deltaTime * transform.forward);
             rigid.velocity = runSpeed * Time.deltaTime * dir;
             anim.SetBool("running", true);
         }
@@ -55,7 +53,6 @@ public class WhyAreYouRunning : MonoBehaviour
         {
             rigid.isKinematic = false;
         }
-        
         _isRunning = true;
     }
 
@@ -71,14 +68,12 @@ public class WhyAreYouRunning : MonoBehaviour
             CastleController.Instance.Hit();
             Destroy(gameObject);
         }
-        
         if (other.CompareTag("Bullet"))
         {
             if (team == Team.A)
             {
                 return;
-            }
-            
+            }    
             Dead();
         }
     }
@@ -96,7 +91,6 @@ public class WhyAreYouRunning : MonoBehaviour
             {
                 return;
             }
-            
             if (other.gameObject.GetComponent<WhyAreYouRunning>().team != team)
             {
                 _isDead = true;

@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AnimationEvent onFire;
     [SerializeField] private GameObject fxGun;
     [SerializeField] private float delayTime = 0.5f;
+    public int rotateSpeed;
+    public float rotateRange;
     private float _delayTimeTemp;
     [SerializeField] [Range(1, 5)] private int numPerShoot = 1;
 
@@ -21,12 +23,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-        Vector3 lookPos = Camera.main.ScreenToWorldPoint(mousePos);
-        lookPos = lookPos - transform.position;
-        float angle = Mathf.Atan2(lookPos.x, lookPos.y) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-
+        UpdateRotating();
         if (Input.GetKey(KeyCode.Space))
         {
             _delayTimeTemp -= Time.deltaTime;
@@ -38,6 +35,31 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void AnhGiangRotate()
+    {
+        if (!Input.GetMouseButton(0)) return;
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
+        Vector3 lookPos = Camera.main.ScreenToWorldPoint(mousePos);
+        lookPos = lookPos - transform.position;
+        float angle = Mathf.Atan2(lookPos.x, lookPos.y) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+    }
+
+    private void UpdateRotating()
+    {
+        if (!Input.GetMouseButton(0)) return;
+        float xInput = Input.GetAxis("Mouse X");
+        transform.Rotate(xInput * rotateSpeed * Time.deltaTime * Vector3.up);
+        Vector3 newEuler = transform.eulerAngles;
+        float yEuler = newEuler.y;
+        if (yEuler > 180) yEuler -= 360;
+        else if (yEuler < -180) yEuler += 360;
+        yEuler = Mathf.Clamp(yEuler, -rotateRange, rotateRange);        
+        newEuler.y = yEuler;
+        transform.eulerAngles = newEuler;
+    }
+
 
     void Spawn()
     {
@@ -54,10 +76,8 @@ public class PlayerController : MonoBehaviour
 
             var dir = new Vector3(Mathf.Sin(rAngle), 0, Mathf.Cos(rAngle));
             var ob = Instantiate(creepPrefab);
-            ob.GetComponent<Transform>().position = spawnPoint.position;
-            var fx = Instantiate(fxGun);
-            fx.transform.position = spawnPoint.position;
-
+            ob.transform.position = spawnPoint.position;
+            Instantiate(fxGun, spawnPoint.position, Quaternion.identity);
             ob.Force(spawnPoint.position + dir * 2);
         }
         
