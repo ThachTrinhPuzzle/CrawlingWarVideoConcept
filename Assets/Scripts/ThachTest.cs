@@ -1,37 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ThachTest : MonoBehaviour
 {
-    public Rigidbody rigid;
-    public float speed;
-    public float force;
-    public float angle;
-    public bool useVelocity;
+    public Transform castle;
+    public float duration;
+    public float strength;
+    public int vibrato;
+    public int id;
 
     private void Update()
     {
-        Vector3 newVelocity = rigid.velocity;
-        newVelocity.z = speed;
-        rigid.velocity = newVelocity;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown((KeyCode.Alpha1 + id)))
         {
-            TestPhysic();
+            if (id == 0) castle.DOShakePosition(duration, strength, vibrato);
+            else if (id == 1) castle.DOShakeRotation(duration, strength, vibrato);
+            else castle.DOShakeScale(duration, strength, vibrato);
         }
     }
-
-    private void Rotate()
-    {
-        Debug.Log(transform.rotation);
-        transform.rotation = transform.rotation * Quaternion.Euler(angle, 0, 0);
-    }
-
-    private void TestPhysic()
-    {
-        if (useVelocity) rigid.velocity = Vector3.forward * speed;
-        else rigid.AddForce(force * Vector3.forward);
-    }
-
-
 }
