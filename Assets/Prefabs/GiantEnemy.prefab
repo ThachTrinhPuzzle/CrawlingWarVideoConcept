@@ -316,7 +316,7 @@ Transform:
   m_GameObject: {fileID: 1973477024529777935}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.826706, y: -0.023465157, z: -2.3535821}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7566221844300926124}
@@ -390,6 +390,10 @@ MonoBehaviour:
   anim: {fileID: 1973477024529777931}
   rigid: {fileID: 1973477024529777933}
   team: 1
+  parachute: {fileID: 0}
+  state: 0
+  windForce: 0
+  fallForce: 0
 --- !u!1 &2402994286424675156
 GameObject:
   m_ObjectHideFlags: 0
