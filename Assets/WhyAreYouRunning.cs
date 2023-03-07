@@ -7,12 +7,15 @@ using UnityEngine;
 
 public class WhyAreYouRunning : MonoBehaviour
 {
-    [SerializeField] private float runSpeed = 5;
-    [SerializeField] private Animator anim;
-    [SerializeField] private Rigidbody rigid;
+    public float runSpeed = 5;
+    public Animator anim;
+    public Rigidbody rigid;
     [SerializeField] private Team team;
+    public GameObject parachute;
+    public TroopState state;
     public Team Team => team;
-
+    public float windForce;
+    public float fallForce;
     private bool _isDead;
 
     private void Awake()
@@ -29,16 +32,44 @@ public class WhyAreYouRunning : MonoBehaviour
 
     void Update()
     {
-        RunForward();
+        if (state == TroopState.Run)
+        {
+            RunForward();
+        }
+        else if (state == TroopState.Paratrooper)
+        {
+            Vector3 force = windForce * transform.forward;
+            force.y = -fallForce;
+            rigid.AddForce(force);
+        }
     }
 
     private void RunForward()
     {
-        Vector3 newVelocity = rigid.velocity;
-        Vector3 direction = runSpeed * transform.forward;
-        newVelocity.x = direction.x;
-        newVelocity.z = direction.z;
-        rigid.velocity = newVelocity;
+        if (state == TroopState.Run)
+        {
+            Vector3 newVelocity = rigid.velocity;
+            Vector3 direction = runSpeed * transform.forward;
+            newVelocity.x = direction.x;
+            newVelocity.z = direction.z;
+            rigid.velocity = newVelocity;
+        }
+    }
+
+    public void EnterParatrooperState()
+    {
+        parachute.SetActive(true);
+        state = TroopState.Paratrooper;
+        rigid.useGravity = false;
+    }
+
+
+
+    private void ExitParatrooperState()
+    {
+        parachute.SetActive(false);
+        state = TroopState.Run;
+        rigid.useGravity = true;
     }
 
 
@@ -68,6 +99,13 @@ public class WhyAreYouRunning : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        Debug.Log(state);
+        Debug.Log(other.gameObject.tag);
+        if (state == TroopState.Paratrooper && other.gameObject.CompareTag("Ground"))
+        {
+            ExitParatrooperState();
+            return;
+        }
         if (other.collider.CompareTag("Player"))
         {
             if (_isDead)
