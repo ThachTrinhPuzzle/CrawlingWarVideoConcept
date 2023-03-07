@@ -9,13 +9,20 @@ using Random = UnityEngine.Random;
 
 public class TowerController : MonoBehaviour
 {
+    [SerializeField] private Material _bowMat;
+    [SerializeField] private Material _towerRedMat;
+    [SerializeField] private Material _towerGreenMat;
+    [SerializeField] private Material _towerGreyMat;
+    [SerializeField] private SkinnedMeshRenderer _bowSkinMeshRenderer;
+    [SerializeField] private MeshRenderer _towerMeshRenderer;
+
     [SerializeField] private Transform tower;
     [SerializeField] private Transform fxPrefab;
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform tfmBow;
     [SerializeField] private Arrow arrowPrefab;
     [SerializeField] private Transform spawnPoint;
-    private Coroutine co;
-    private List<Transform> enemyList = new List<Transform>();
+    //  private Coroutine co;
+    [SerializeField] private List<Transform> enemyList = new List<Transform>();
     [SerializeField] private float delayFired = 1;
     private float delayFireTemp = 0;
 
@@ -25,21 +32,49 @@ public class TowerController : MonoBehaviour
 
     private Transform target;
 
+    private Team owner;
+    public int HP = 10;
+    public Team Owner
+    {
+        get => owner;
+        set
+        {
+            owner = value;
+            if (owner == Team.None)
+            {
+                _towerMeshRenderer.material = _towerGreyMat;
+            }
+            else if (owner == Team.A)
+            {
+                _towerMeshRenderer.material = _towerGreenMat;
+            }
+            else if (owner == Team.B)
+            {
+                _towerMeshRenderer.material = _towerRedMat;
+            }
+        } 
+    }
+
+    private void Start()
+    {
+        Owner = Team.None;       
+    }
+
     [ContextMenu("Appear")]
     public void Appear()
     {
         delayFireTemp = delayFired;
         eventAnim.onFired = SpawnArrow;
-        if (co != null)
-        {
-            StopCoroutine(co);
-        }
+        //if (co != null)
+        //{
+        //    StopCoroutine(co);
+        //}
 
-        co = StartCoroutine(PlayFx());
-        
+        // co = StartCoroutine(PlayFx());
+
         tower.DOLocalMoveY(0, 3).OnComplete(() =>
         {
-            StopCoroutine(co);
+            //  StopCoroutine(co);
             StartCoroutine(FindToFire());
         });
     }
@@ -54,35 +89,36 @@ public class TowerController : MonoBehaviour
             var ob = Instantiate(fxPrefab, transform);
             float x = Random.Range(-1f, 1f);
             float z = Random.Range(-2f, 0f);
-            
+
             ob.localPosition = new Vector3(x, 0, z);
-            
+
             yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
         }
 
-        co = StartCoroutine(PlayFx());
+        //  co = StartCoroutine(PlayFx());
     }
 
     IEnumerator FindToFire()
     {
-        yield return new WaitForSeconds(0.5f);
+        Debug.Log("======== FindToFire");
+        yield return new WaitForSeconds(0.1f);
         Transform _target = GetNearestEnemy();
 
         if (_target != null)
         {
             target = _target;
         }
-        
+
         StartCoroutine(FindToFire());
     }
-    
+
 
     void SpawnArrow()
     {
         var arr = Instantiate(arrowPrefab);
         arr.transform.position = spawnPoint.position;
         arr.transform.rotation = spawnPoint.rotation;
-        
+
         arr.SetTarget(target);
     }
 
@@ -91,7 +127,7 @@ public class TowerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var wayr = other.GetComponent<WhyAreYouRunning>();
-            if (wayr != null && wayr.Team == Team.B)
+            if (wayr != null && wayr.Team != Owner)
             {
                 enemyList.Add(other.transform);
             }
@@ -103,7 +139,7 @@ public class TowerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var wayr = other.GetComponent<WhyAreYouRunning>();
-            if (wayr != null && wayr.Team == Team.B)
+            if (wayr != null && wayr.Team != Owner)
             {
                 enemyList.Remove(other.transform);
             }
@@ -150,7 +186,7 @@ public class TowerController : MonoBehaviour
 
         if (target != null)
         {
-            Vector3 pos1 = player.position;
+            Vector3 pos1 = tfmBow.position;
             pos1.y = 0;
 
             Vector3 pos2 = target.position;
@@ -160,17 +196,17 @@ public class TowerController : MonoBehaviour
 
 
             float angle = Vector3.SignedAngle(a, Vector3.forward, Vector3.up);
-            
-            Quaternion targetRotation = Quaternion.Euler(-90, -angle, 0);
 
-            player.rotation = Quaternion.RotateTowards(player.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
+
+            tfmBow.rotation = Quaternion.RotateTowards(tfmBow.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             delayFireTemp -= Time.deltaTime;
 
             if (delayFireTemp <= 0)
             {
                 delayFireTemp = delayFired;
-                anim.SetTrigger("fire");
+                anim.SetTrigger("Attack");
             }
         }
     }

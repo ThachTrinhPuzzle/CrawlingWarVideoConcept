@@ -125,5 +125,6 @@ public class WhyAreYouRunning : MonoBehaviour
 public enum Team
 {
     A,
-    B
+    B,
+    None
 }
