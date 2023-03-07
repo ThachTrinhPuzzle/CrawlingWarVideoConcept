@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -62,16 +63,19 @@ public class PlayerController : MonoBehaviour
 
     void SpawnTroop()
     {
-        Vector3 mockPos = spawnPoint.forward - spawnPoint.position;
-        float totalAngle = 90;
-        float angle = totalAngle / numPerShoot;
-        float globalAngle = spawnPoint.eulerAngles.y;
+        float totalAngle = numPerShoot > 1 ? 90 : 0;
+        float deltaAngle = 0;
+        if (numPerShoot > 1)
+        {
+            deltaAngle = totalAngle / (numPerShoot - 1);
+        }
+        Quaternion direction = spawnPoint.rotation * Quaternion.Euler(-90, 0, 0);
         for (int i = 0; i < numPerShoot; i++)
         {
-            float sign = Mathf.Sign(180 - globalAngle);
-            float rAngle = Mathf.Deg2Rad * (globalAngle - sign * (angle * i) + sign * totalAngle / 2);
-            Instantiate(creepPrefab, spawnPoint.position, spawnPoint.rotation * Quaternion.Euler(-90, 0, 0));
+            WhyAreYouRunning troop = Instantiate(creepPrefab, spawnPoint.position, direction * Quaternion.Euler(0, -totalAngle / 2 + i * deltaAngle, 0));
             Instantiate(fxGun, spawnPoint.position, Quaternion.identity);
+            StartCoroutine(troop.FreezeYPosIEnumerator());
+            //troop.transform.DORotate(spawnPoint.up, 1f);
         }
         
     }

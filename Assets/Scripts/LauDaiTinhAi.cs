@@ -18,18 +18,24 @@ public class LauDaiTinhAi : MonoBehaviour
         {
             Spawn();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Hit();
+        }
     }
-
 
 
     void Spawn()
     {
         Instantiate(normalEnemyPrefab, door.position, door.rotation);
     }
-
+    public int strengthRotate = 20;
+    public int strengthScale = 10;
     public void Hit()
     {
-        transform.DOShakeRotation(1, 3, 20);
-        transform.DOShakeScale(1, 0.5f, 10);
+        transform.DOKill();
+        transform.DOShakeRotation(1, 3, strengthRotate);
+        transform.DOShakeScale(1, 0.5f, strengthScale);
     }
+
 }
