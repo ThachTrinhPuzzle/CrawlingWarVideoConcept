@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 8176250589058769260}
   m_Layer: 0
   m_Name: GiantZombie
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -589,6 +589,10 @@ MonoBehaviour:
   anim: {fileID: 5569943215705214744}
   rigid: {fileID: 7164679320529594240}
   team: 0
+  parachute: {fileID: 0}
+  state: 0
+  windForce: 0
+  fallForce: 0
 --- !u!1 &5798200732807292487
 GameObject:
   m_ObjectHideFlags: 0

@@ -80,17 +80,16 @@ public class WhyAreYouRunning : MonoBehaviour
             CastleController.Instance.Hit();
             Destroy(gameObject);
         }
+
         if (other.CompareTag("Bullet"))
         {
             if (team == Team.A)
             {
                 return;
-            }    
+            }
             Dead();
         }
     }
-
-
 
     void Dead()
     {
@@ -111,6 +110,7 @@ public class WhyAreYouRunning : MonoBehaviour
             ExitParatrooperState();
             return;
         }
+
         if (other.collider.CompareTag("Player"))
         {
             if (_isDead)
@@ -122,7 +122,18 @@ public class WhyAreYouRunning : MonoBehaviour
                 _isDead = true;
                 Invoke(nameof(Dead), 0.5f);
             }
-            
+
+        }
+
+        if (other.collider.CompareTag("Tower"))
+        {
+            var _tower = other.collider.GetComponent<TowerController>();
+            var _towerTeam = _tower.Owner;
+            if (team != _towerTeam)
+            {
+                _tower.TakeDamage(1, team);
+                Dead();
+            }
         }
     }
 }

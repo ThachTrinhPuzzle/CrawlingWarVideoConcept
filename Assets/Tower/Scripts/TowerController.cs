@@ -225,6 +225,15 @@ public class TowerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage, Team team)
+    {
+        HP -= damage;
+        if (HP <= 0)
+        {
+            Owner = team;
+        }
+    }
+
     [ContextMenu("Set Team A")]
     void SetTeamA()
     {
