@@ -142,7 +142,7 @@ GameObject:
   m_Layer: 0
   m_Name: ShootingPos
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -326,6 +326,7 @@ MonoBehaviour:
   anim: {fileID: 2770830358875615751}
   eventAnim: {fileID: 2770830358875615775}
   rotationSpeed: 100
+  _colliderBowGetTarget: {fileID: 2770830358875615774}
   HP: 10
 --- !u!114 &2770830358875615775
 MonoBehaviour:
@@ -794,7 +795,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6525797682968693759, guid: c65dc9df6ae21fb4c963d22b26ef7d76, type: 3}
+  - {fileID: 2100000, guid: f5a584d2880804443b981970bacc1714, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
