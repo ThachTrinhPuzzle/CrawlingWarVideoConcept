@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateRotating()
     {
-        if (!Input.GetMouseButton(0)) return;
-        float xInput = Input.GetAxis("Mouse X");
+        float xInput = Input.GetAxis("Horizontal");
+        Debug.Log(xInput);
         transform.Rotate(-xInput * rotateSpeed * Time.deltaTime * Vector3.up);
         Vector3 newEuler = transform.eulerAngles;
         float yEuler = newEuler.y;
