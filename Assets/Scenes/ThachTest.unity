@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2585.1055, g: 2616.9492, b: 3698.7969, a: 1}
+  m_IndirectSpecularColor: {r: 2585.461, g: 2618.039, b: 3701.7031, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4549,8 +4549,6 @@ MonoBehaviour:
   giantEnemyPrefab: {fileID: 8176250589058769260, guid: aa9be98e4d8102d478b22eb7328d82f9,
     type: 3}
   door: {fileID: 782850281}
-  strengthRotate: 20
-  strengthScale: 3
 --- !u!65 &3469287837330679995
 BoxCollider:
   m_ObjectHideFlags: 0
