@@ -10,7 +10,9 @@ public class LauDaiTinhAi : MonoBehaviour
     public WhyAreYouRunning normalEnemyPrefab;
     public WhyAreYouRunning giantEnemyPrefab;
     public Transform door;
+    private bool isShaking;
     private void Awake() => Instance = this;
+    private void Start() => isShaking = false;
 
     private void Update()
     {
@@ -23,19 +25,16 @@ public class LauDaiTinhAi : MonoBehaviour
             Hit();
         }
     }
-
-
     void Spawn()
     {
         Instantiate(normalEnemyPrefab, door.position, door.rotation);
     }
-    public int strengthRotate = 20;
-    public int strengthScale = 10;
     public void Hit()
     {
-        transform.DOKill();
-        transform.DOShakeRotation(1, 3, strengthRotate);
-        transform.DOShakeScale(1, 0.5f, strengthScale);
+        if (isShaking) return;
+        isShaking = true;
+        float duration = 1f;
+        transform.DOShakeRotation(duration, 3, 20);
+        transform.DOShakeScale(duration, 0.5f, 10).OnComplete(() => isShaking = false);
     }
-
 }
