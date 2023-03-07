@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
             WhyAreYouRunning troop = Instantiate(creepPrefab, spawnPoint.position, direction * Quaternion.Euler(0, -totalAngle / 2 + i * deltaAngle, 0));
             Instantiate(fxGun, spawnPoint.position, Quaternion.identity);
             StartCoroutine(troop.FreezeYPosIEnumerator());
-            //troop.transform.DORotate(spawnPoint.up, 1f);
+            troop.transform.DORotate(spawnPoint.eulerAngles + new Vector3(-90, 0, 0), 1f);
         }
         
     }
