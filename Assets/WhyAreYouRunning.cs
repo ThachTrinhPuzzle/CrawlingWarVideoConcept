@@ -97,10 +97,15 @@ public class WhyAreYouRunning : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public IEnumerator FreezeYPosIEnumerator()
+    {
+        rigid.constraints = (RigidbodyConstraints)116;
+        yield return null;
+        rigid.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log(state);
-        Debug.Log(other.gameObject.tag);
         if (state == TroopState.Paratrooper && other.gameObject.CompareTag("Ground"))
         {
             ExitParatrooperState();

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2585.1914, g: 2617.332, b: 3699.7344, a: 1}
+  m_IndirectSpecularColor: {r: 2585.1055, g: 2616.9492, b: 3698.7969, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2857,7 +2857,7 @@ MonoBehaviour:
   delayTime: 0.14
   rotateSpeed: 20
   rotateRange: 60
-  numPerShoot: 1
+  numPerShoot: 5
 --- !u!4 &1630004034
 Transform:
   m_ObjectHideFlags: 0
