@@ -1,6 +1,7 @@
 public enum TroopState
 {
-    Run,
+    MoveToCastle,
+    MoveToTower,
     Attack,
-    Paratrooper,
+    Paratrooper
 }

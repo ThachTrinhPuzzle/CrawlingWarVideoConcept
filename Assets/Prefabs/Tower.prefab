@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 2770830358875615775}
   m_Layer: 0
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -657,9 +657,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1476868836714825052}
+  - component: {fileID: 1990072613548297770}
   m_Layer: 0
   m_Name: ColliderDetect
-  m_TagString: Untagged
+  m_TagString: TowerTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -679,6 +680,19 @@ Transform:
   m_Father: {fileID: 2448074710636516834}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1990072613548297770
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7136245519474101847}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 17.95
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8358784936241288398
 GameObject:
   m_ObjectHideFlags: 0
