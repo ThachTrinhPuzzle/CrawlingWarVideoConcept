@@ -29,10 +29,11 @@ public class TowerController : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private AnimationEvent eventAnim;
     [SerializeField] private float rotationSpeed = 100f;
+    [SerializeField] private Collider _colliderBowGetTarget;
 
     private Transform target;
 
-    private Team owner;
+    private Team owner = Team.None;
     public int HP = 10;
     public Team Owner
     {
@@ -52,11 +53,13 @@ public class TowerController : MonoBehaviour
             {
                 _towerMeshRenderer.material = _towerRedMat;
             }
+            StartCoroutine(ChangeTeam());
         } 
     }
 
     private void Start()
     {
+        _towerMeshRenderer.material = _towerGreyMat;
         Owner = Team.None;       
     }
 
@@ -127,11 +130,21 @@ public class TowerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var wayr = other.GetComponent<WhyAreYouRunning>();
-            if (wayr != null && wayr.Team != Owner)
+            if (wayr != null 
+                && wayr.Team != Owner
+                 && Owner != Team.None)
             {
                 enemyList.Add(other.transform);
             }
         }
+    }
+
+    IEnumerator ChangeTeam()
+    {
+        enemyList.Clear();
+        _colliderBowGetTarget.enabled = false;
+        yield return new WaitForSeconds(0.1f);
+        _colliderBowGetTarget.enabled = true;
     }
 
     private void OnTriggerExit(Collider other)
@@ -139,7 +152,8 @@ public class TowerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var wayr = other.GetComponent<WhyAreYouRunning>();
-            if (wayr != null && wayr.Team != Owner)
+            if (wayr != null 
+                && wayr.Team != Owner)
             {
                 enemyList.Remove(other.transform);
             }
@@ -209,5 +223,32 @@ public class TowerController : MonoBehaviour
                 anim.SetTrigger("Attack");
             }
         }
+    }
+
+    public void TakeDamage(int damage, Team team)
+    {
+        HP -= damage;
+        if (HP <= 0)
+        {
+            Owner = team;
+        }
+    }
+
+    [ContextMenu("Set Team A")]
+    void SetTeamA()
+    {
+        Owner = Team.A;
+    }
+
+    [ContextMenu("Set Team B")]
+    void SetTeamB()
+    {
+        Owner = Team.B;
+    }
+
+    [ContextMenu("Set Team None")]
+    void SetTeamNone()
+    {
+        Owner = Team.None;
     }
 }

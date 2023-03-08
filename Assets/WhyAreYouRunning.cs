@@ -17,6 +17,7 @@ public class WhyAreYouRunning : MonoBehaviour
     public float windForce;
     public float fallForce;
     private bool _isDead;
+    private Transform _tfmTower;
 
     private void Awake()
     {
@@ -32,7 +33,7 @@ public class WhyAreYouRunning : MonoBehaviour
 
     void Update()
     {
-        if (state == TroopState.Run)
+        if (state == TroopState.MoveToCastle)
         {
             RunForward();
         }
@@ -42,11 +43,15 @@ public class WhyAreYouRunning : MonoBehaviour
             force.y = -fallForce;
             rigid.AddForce(force);
         }
+        else if (state == TroopState.Attack)
+        {
+            AttackTower();
+        }
     }
 
     private void RunForward()
     {
-        if (state == TroopState.Run)
+        if (state == TroopState.MoveToCastle)
         {
             Vector3 newVelocity = rigid.velocity;
             Vector3 direction = runSpeed * transform.forward;
@@ -68,7 +73,7 @@ public class WhyAreYouRunning : MonoBehaviour
     private void ExitParatrooperState()
     {
         parachute.SetActive(false);
-        state = TroopState.Run;
+        state = TroopState.MoveToCastle;
         rigid.useGravity = true;
     }
 
@@ -80,17 +85,34 @@ public class WhyAreYouRunning : MonoBehaviour
             CastleController.Instance.Hit();
             Destroy(gameObject);
         }
+
         if (other.CompareTag("Bullet"))
         {
             if (team == Team.A)
             {
                 return;
-            }    
+            }
             Dead();
         }
+
+        if (other.CompareTag("TowerTarget"))
+        {
+            Debug.Log("======== Attact Tower");
+     
+                 var _tower = other.GetComponentInParent<TowerController>();
+            if (_tower.Owner != team)
+            {
+                _tfmTower = _tower.transform;
+                AttackTower();
+            }
+        }
     }
-
-
+    [ContextMenu("AttackTower")]
+    public void AttackTower()
+    {
+        if (_tfmTower == null) return;
+        transform.DOLookAt(_tfmTower.transform.position, 0.5f);
+    }
 
     void Dead()
     {
@@ -111,6 +133,7 @@ public class WhyAreYouRunning : MonoBehaviour
             ExitParatrooperState();
             return;
         }
+
         if (other.collider.CompareTag("Player"))
         {
             if (_isDead)
@@ -122,7 +145,18 @@ public class WhyAreYouRunning : MonoBehaviour
                 _isDead = true;
                 Invoke(nameof(Dead), 0.5f);
             }
-            
+
+        }
+
+        if (other.collider.CompareTag("Tower"))
+        {
+            var _tower = other.collider.GetComponent<TowerController>();
+            var _towerTeam = _tower.Owner;
+            if (team != _towerTeam)
+            {
+                _tower.TakeDamage(1, team);
+                Dead();
+            }
         }
     }
 }
