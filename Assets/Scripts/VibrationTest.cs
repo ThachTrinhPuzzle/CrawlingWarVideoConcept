@@ -18,6 +18,7 @@ public class VibrationTest : MonoBehaviour
             if (id == 0) castle.DOShakePosition(duration, strength, vibrato);
             else if (id == 1) castle.DOShakeRotation(duration, strength, vibrato);
             else castle.DOShakeScale(duration, strength, vibrato);
+            Debug.Log("7-000000000000000000 MU vo doi");
         }
     }
 }
