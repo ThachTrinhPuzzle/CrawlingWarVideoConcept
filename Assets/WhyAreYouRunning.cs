@@ -35,7 +35,7 @@ public class WhyAreYouRunning : MonoBehaviour
     {
         if (state == TroopState.MoveToCastle)
         {
-            RunForward();
+            MoveToCastle();
         }
         else if (state == TroopState.Paratrooper)
         {
@@ -47,14 +47,44 @@ public class WhyAreYouRunning : MonoBehaviour
         {
             AttackTower();
         }
+        else if (state == TroopState.MoveToTower)
+        {
+            MoveToTower();
+        }
+        else if (state == TroopState.MoveToCanon)
+        {
+            MoveToCanon();
+        }
     }
 
-    private void RunForward()
+    private void MoveToTower()
+    {
+        if (_tfmTower == null) return;
+        Vector3 newVelocity = rigid.velocity;
+        Vector3 direction = runSpeed * (_tfmTower.position - transform.position).normalized;
+        newVelocity.x = direction.x;
+        newVelocity.z = direction.z;
+        rigid.velocity = newVelocity;
+    }
+
+    private void MoveToCanon()
+    {
+        var _canonPos = PlayerController.Instance.transform.position;
+        transform.LookAt(_canonPos);
+        Vector3 newVelocity = rigid.velocity;
+        Vector3 direction = runSpeed * (_canonPos - transform.position).normalized;
+        newVelocity.x = direction.x;
+        newVelocity.z = direction.z;
+        rigid.velocity = newVelocity;
+    }
+
+    private void MoveToCastle()
     {
         if (state == TroopState.MoveToCastle)
         {
             Vector3 newVelocity = rigid.velocity;
-            Vector3 direction = runSpeed * transform.forward;
+            var _castlePos = LauDaiTinhAi.Instance.transform.position;
+            Vector3 direction = runSpeed * (_castlePos - transform.position).normalized;
             newVelocity.x = direction.x;
             newVelocity.z = direction.z;
             rigid.velocity = newVelocity;
@@ -97,21 +127,40 @@ public class WhyAreYouRunning : MonoBehaviour
 
         if (other.CompareTag("TowerTarget"))
         {
-            Debug.Log("======== Attact Tower");
-     
-                 var _tower = other.GetComponentInParent<TowerController>();
+            //Debug.Log("======== Attact Tower");
+
+            var _tower = other.GetComponentInParent<TowerController>();
             if (_tower.Owner != team)
             {
                 _tfmTower = _tower.transform;
-                AttackTower();
+                state = TroopState.MoveToTower;
+                transform.DOLookAt(_tfmTower.transform.position, 0.5f);
+                MoveToTower();
             }
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("TowerTarget"))
+        {
+            if (team == Team.A)
+            {
+                transform.DOLookAt(LauDaiTinhAi.Instance.transform.position, 0.5f);
+                state = TroopState.MoveToCastle;
+            }
+            else if (team == Team.B)
+            {
+                state = TroopState.MoveToCanon;
+            }
+            
+        }
+    }
+
     [ContextMenu("AttackTower")]
     public void AttackTower()
     {
-        if (_tfmTower == null) return;
-        transform.DOLookAt(_tfmTower.transform.position, 0.5f);
+
     }
 
     void Dead()
@@ -150,13 +199,18 @@ public class WhyAreYouRunning : MonoBehaviour
 
         if (other.collider.CompareTag("Tower"))
         {
-            var _tower = other.collider.GetComponent<TowerController>();
+            var _tower = other.collider.GetComponentInParent<TowerController>();
             var _towerTeam = _tower.Owner;
             if (team != _towerTeam)
             {
                 _tower.TakeDamage(1, team);
                 Dead();
             }
+        }
+
+        if (other.collider.CompareTag("Castle"))
+        {
+            Dead();
         }
     }
 }

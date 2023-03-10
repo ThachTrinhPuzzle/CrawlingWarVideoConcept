@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     [SerializeField] private WhyAreYouRunning creepPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Animator anim;
@@ -16,7 +17,8 @@ public class PlayerController : MonoBehaviour
     public float rotateRange;
     private float _delayTimeTemp;
     [SerializeField] [Range(1, 5)] private int numPerShoot = 1;
-
+    
+    private void Awake() => Instance = this;
     private void Start()
     {
         onFire.onFired = SpawnTroop;

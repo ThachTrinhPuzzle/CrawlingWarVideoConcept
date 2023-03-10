@@ -141,6 +141,21 @@ public class TowerController : MonoBehaviour
 
     IEnumerator ChangeTeam()
     {
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            var _enemy = enemyList[i].gameObject.GetComponent<WhyAreYouRunning>();
+            if (_enemy.Team == Owner)
+            {
+                if (_enemy.Team == Team.A)
+                {
+                    _enemy.state = TroopState.MoveToCastle;
+                }
+                else if (_enemy.Team == Team.B)
+                {
+                    _enemy.state = TroopState.MoveToCanon;
+                }
+            }
+        }
         enemyList.Clear();
         _colliderBowGetTarget.enabled = false;
         yield return new WaitForSeconds(0.1f);

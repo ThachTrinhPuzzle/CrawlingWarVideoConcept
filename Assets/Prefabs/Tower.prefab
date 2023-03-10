@@ -260,6 +260,7 @@ Transform:
   - {fileID: 8147748235485949240}
   - {fileID: 2134215486928098810}
   - {fileID: 1476868836714825052}
+  - {fileID: 1261918899655071221}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -885,3 +886,48 @@ Transform:
   m_Father: {fileID: 4106476285689108922}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.000005976415, y: 1.0381331e-11, z: -3.0329766e-11}
+--- !u!1 &8926302693431716067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261918899655071221}
+  - component: {fileID: 3733602942417644052}
+  m_Layer: 0
+  m_Name: ColliderAttack
+  m_TagString: Tower
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1261918899655071221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8926302693431716067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2448074710636516834}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3733602942417644052
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8926302693431716067}
+  m_Material: {fileID: 13400000, guid: 0bf96c8d9726210429179a60246850a9, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.352454, y: 2.992828, z: 1.3957815}
+  m_Center: {x: -0.0045984983, y: 0.9964142, z: 0.092381954}

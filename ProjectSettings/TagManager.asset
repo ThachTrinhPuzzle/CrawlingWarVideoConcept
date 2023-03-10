@@ -7,6 +7,9 @@ TagManager:
   - Bullet
   - Dead
   - Ground
+  - Tower
+  - TowerTarget
+  - Castle
   layers:
   - Default
   - TransparentFX
