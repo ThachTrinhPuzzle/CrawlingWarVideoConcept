@@ -172,6 +172,7 @@ public class WhyAreYouRunning : MonoBehaviour
     {
         rigid.constraints = (RigidbodyConstraints)116;
         yield return null;
+        yield return null;
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
